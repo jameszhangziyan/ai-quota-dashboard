@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "AI 额度看板助手",
+  "version": "1.1.0",
+  "description": "借用 Chrome 里已登录的 Gemini、Kimi 页面查看用量，只把百分比发给本机看板（127.0.0.1:8787）。不读取任何登录信息。",
+  "permissions": ["alarms", "storage"],
+  "host_permissions": [
+    "https://gemini.google.com/*",
+    "https://www.kimi.com/*",
+    "http://127.0.0.1:8787/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://www.kimi.com/settings/subscription*"],
+      "js": ["kimi_relay.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": { "default_title": "AI 额度看板助手：点击立即刷新" }
+}

@@ -1,0 +1,13 @@
+# 含登录信息、访问密钥或本机状态，绝不能提交
+token_dashboard/.access_key
+token_dashboard/.manual_auth.json
+token_dashboard/.ext_data.json
+token_dashboard/.quota_cache.json
+token_dashboard/.shape_*.json
+token_dashboard/.gist_id
+token_dashboard/.widget_hash
+token_dashboard/chrome_extension/config.js
+token_dashboard/AI额度.js
+*.log
+.DS_Store
+__pycache__/

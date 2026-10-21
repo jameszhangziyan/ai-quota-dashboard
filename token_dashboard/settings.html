@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>额度登录设置</title>
+<style>
+:root { --bg: #f6f5f1; --card: #fff; --text: #1d1d1f; --muted: #6e6e73; --line: #e6e4de; --ok: #10a37f; --warn: #d4542b; --accent: #3b6fe0; }
+@media (prefers-color-scheme: dark) { :root { --bg: #16161a; --card: #222227; --text: #f2f2f4; --muted: #9a9aa3; --line: #34343b; --ok: #2fc49a; --warn: #f07a52; --accent: #6b95f2; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; padding: 24px 16px; }
+main { max-width: 760px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 6px; }
+.lead { color: var(--muted); margin: 0 0 20px; font-size: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; margin-bottom: 16px; }
+.card h2 { font-size: 17px; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
+.state { font-size: 12px; font-weight: 500; padding: 1px 8px; border-radius: 999px; background: var(--line); color: var(--muted); }
+.state.ok { background: color-mix(in srgb, var(--ok) 18%, transparent); color: var(--ok); }
+ol { padding-left: 20px; margin: 8px 0 12px; font-size: 14px; }
+ol li { margin: 3px 0; }
+code { background: var(--line); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+textarea { width: 100%; min-height: 110px; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font: 12px/1.4 ui-monospace, Menlo, monospace; background: var(--bg); color: var(--text); resize: vertical; }
+.row { display: flex; gap: 10px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+button { border: 0; border-radius: 9px; padding: 8px 16px; font: inherit; font-size: 14px; cursor: pointer; background: var(--accent); color: #fff; }
+button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+.result { font-size: 13px; }
+.result.ok { color: var(--ok); } .result.err { color: var(--warn); }
+.note { font-size: 13px; color: var(--muted); }
+.danger { font-size: 13px; color: var(--warn); margin: 6px 0 4px; font-weight: 500; }
+</style>
+</head>
+<body>
+<main>
+  <h1>额度登录设置</h1>
+  <p class="lead">把浏览器里官方额度请求「复制为 cURL」粘贴到这里。内容只保存在这台 Mac 上，只会发回给原来的官方地址；这个页面只能在 Mac 本机打开。</p>
+
+  <section class="card" data-provider="workbuddy">
+    <h2>WorkBuddy <span class="state">未设置</span></h2>
+    <ol>
+      <li>在 Chrome 打开 <code>https://www.workbuddy.cn/profile/plans-usage</code>（未登录会先让你扫码登录），确认已登录、能看到用量数字。</li>
+      <li>按 <code>⌥⌘I</code>（Option+Command+I）打开开发者工具，点顶部的 <b>Network（网络）</b> 标签。</li>
+      <li><b>开着开发者工具</b>按 <code>⌘R</code> 刷新页面（必须在打开 Network 之后刷新，否则列表是空的）。</li>
+      <li>在 Network 左上角的过滤框输入 <code>get-user-resource</code>，列表里会剩一条（同名多条任选一条）。</li>
+      <li>在这条上<b>右键 → Copy（复制）→ Copy as cURL (bash)</b>。注意别选 cmd / PowerShell 版本。</li>
+      <li>回到这里粘贴，点「保存并测试」。</li>
+    </ol>
+    <textarea placeholder="curl 'https://…/billing/meter/get-user-resource' -H 'authorization: …' …"></textarea>
+    <div class="row"><button class="save">保存并测试</button><button class="ghost clear">清除</button><span class="result"></span></div>
+  </section>
+
+  <section class="card" data-provider="kimiwork">
+    <h2>Kimi 会员（含 Kimi Work） <span class="state">未设置</span></h2>
+    <ol>
+      <li>在 Chrome 打开 <code>https://www.kimi.com/settings/subscription</code>（「我的订阅」页），确认已登录、能看到用量数字。</li>
+      <li>按 <code>⌥⌘I</code>（Option+Command+I）打开开发者工具，点顶部的 <b>Network（网络）</b> 标签。</li>
+      <li><b>开着开发者工具</b>按 <code>⌘R</code> 刷新页面（必须在打开 Network 之后刷新，否则列表是空的）。</li>
+      <li>在 Network 左上角的过滤框输入 <code>GetSubscriptionStats</code>，列表里会剩一条（同名多条任选一条）。如果弹出「已取消自动续订」之类的提示，点「我知道了」关掉即可。</li>
+      <li>在这条上<b>右键 → Copy（复制）→ Copy as cURL (bash)</b>。注意别选 cmd / PowerShell 版本。</li>
+      <li>回到这里粘贴，点「保存并测试」。</li>
+    </ol>
+    <textarea placeholder="curl 'https://www.kimi.com/apiv2/kimi.gateway.membership.v2.MembershipService/GetSubscriptionStats' …"></textarea>
+    <div class="row"><button class="save">保存并测试</button><button class="ghost clear">清除</button><span class="result"></span></div>
+  </section>
+
+  <section class="card" data-provider="gemini">
+    <h2>Gemini <span class="state">未设置</span></h2>
+    <p class="danger">注意：这条请求里带着你完整的 Google 登录 Cookie（能登录 Gmail、云端硬盘等），只保存在这台 Mac 上，千万不要发给任何人。Google 会不定期更换 Cookie，届时需要重新粘贴。</p>
+    <ol>
+      <li>在 Chrome 打开 <code>https://gemini.google.com/usage</code>，确认已登录、能看到用量。</li>
+      <li>按 <code>⌥⌘I</code>（Option+Command+I）打开开发者工具，点顶部的 <b>Network（网络）</b> 标签。</li>
+      <li><b>开着开发者工具</b>按 <code>⌘R</code> 刷新页面。</li>
+      <li>在过滤框输入 <code>usage</code>，找 <b>Type（类型）是 document</b>、名字叫 <code>usage</code> 的那一条（一般是列表第一条）。</li>
+      <li>在这条上<b>右键 → Copy（复制）→ Copy as cURL (bash)</b>。</li>
+      <li>回到这里粘贴，点「保存并测试」。</li>
+    </ol>
+    <textarea placeholder="curl 'https://gemini.google.com/usage' -H 'cookie: …' …"></textarea>
+    <div class="row"><button class="save">保存并测试</button><button class="ghost clear">清除</button><span class="result"></span></div>
+  </section>
+
+  <p class="note">网页登录过期后（一般几天到几周），看板会提示「请重新粘贴」，重复上面步骤即可。粘贴的内容相当于你的登录凭证，不要发给别人。</p>
+</main>
+<script>
+const KEY = new URLSearchParams(location.search).get("k") || "";
+const api = (path, opts) => fetch(`${path}?k=${encodeURIComponent(KEY)}`, opts).then(async r => {
+  const j = await r.json().catch(() => ({ error: "服务器返回异常" }));
+  if (!r.ok) throw new Error(j.error || r.statusText);
+  return j;
+});
+async function refresh() {
+  const st = await api("/api/auth");
+  document.querySelectorAll("[data-provider]").forEach(card => {
+    const s = st[card.dataset.provider] || {};
+    const el = card.querySelector(".state");
+    el.textContent = s.saved_at ? `已设置 · ${s.saved_at.replace("T", " ").slice(0, 16)}` : "未设置";
+    el.classList.toggle("ok", !!s.saved_at);
+  });
+}
+document.querySelectorAll("[data-provider]").forEach(card => {
+  const provider = card.dataset.provider, ta = card.querySelector("textarea"), res = card.querySelector(".result");
+  card.querySelector(".save").onclick = async () => {
+    res.className = "result"; res.textContent = "测试中…";
+    try {
+      const j = await api("/api/auth", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider, curl: ta.value }) });
+      ta.value = "";
+      res.className = "result " + (j.ok ? "ok" : "err");
+      res.textContent = j.message;
+    } catch (e) { res.className = "result err"; res.textContent = e.message; }
+    refresh();
+  };
+  card.querySelector(".clear").onclick = async () => {
+    await api("/api/auth", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ provider }) });
+    res.className = "result"; res.textContent = "已清除"; refresh();
+  };
+});
+refresh().catch(e => document.querySelector(".lead").textContent = e.message);
+</script>
+</body>
+</html>
