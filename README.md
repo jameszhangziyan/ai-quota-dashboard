@@ -38,7 +38,7 @@ Chrome 扩展（Gemini/Kimi）─┼─► server.py（Mac，:8787）─► 网�
 > ⚠️ 不要放在「文稿」「桌面」「下载」里：macOS 隐私保护会阻止开机自启的服务读取这些文件夹。
 
 ```bash
-git clone https://github.com/<你的用户名>/ai-quota-dashboard.git ~/ai-quota-dashboard
+git clone https://github.com/jameszhangziyan/ai-quota-dashboard.git ~/ai-quota-dashboard
 cd ~/ai-quota-dashboard
 ./install.sh
 ```
